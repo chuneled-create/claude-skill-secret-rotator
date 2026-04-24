@@ -118,8 +118,8 @@ Telegram bots consume tokens in one of two modes:
 Restarting the process is enough:
 
 ```bash
-launchctl unload ~/Library/LaunchAgents/com.yourorg.<bot>.plist
-launchctl load   ~/Library/LaunchAgents/com.yourorg.<bot>.plist
+launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.yourorg.<bot>.plist
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.yourorg.<bot>.plist
 ```
 
 **Webhook** — Telegram pushes updates to an HTTPS endpoint. The bot

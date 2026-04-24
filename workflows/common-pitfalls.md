@@ -169,7 +169,7 @@ making more changes. The checklist:
 
 1. Roll back `.secrets` from the most recent `.bak-*` timestamped
    backup.
-2. Reload all consumers (`launchctl unload/load`, `systemctl restart`,
+2. Reload all consumers (`launchctl bootout/bootstrap`, `systemctl restart`,
    container restart — whatever applies).
 3. Verify old credentials still work against at least one consumer.
 4. **Now** diagnose what went wrong — while production is stable on

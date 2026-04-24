@@ -62,7 +62,7 @@ so Claude pulls only the one that matches your credential type.
 ## What's included
 
 | File | Purpose |
-|---|---|
+| --- | --- |
 | `SKILL.md` | The skill manifest: activation triggers, five non-negotiable principles, and the standard 10-step flow. |
 | `workflows/audit-before-rotation.md` | Map every secret and every consumer before you rotate anything. |
 | `workflows/rotate-api-keys.md` | Generic `sk-*`/`pk-*` API keys — Anthropic, OpenAI, Stripe, SendGrid, and the fallback for anything else. |

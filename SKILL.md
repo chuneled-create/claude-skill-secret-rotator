@@ -1,6 +1,7 @@
 ---
 name: secret-rotator
 description: "Rotate credentials safely in repositories and production systems. Activate when user mentions rotating API keys, Gmail app passwords, Telegram bot tokens, exchange API credentials (like BITGET/Binance), or any secret that lives in .secrets files or config JSONs. Also activate when user discusses credential exposure in git history, recent leaks, or security audits of their codebase."
+license: MIT
 ---
 
 # Secret Rotator

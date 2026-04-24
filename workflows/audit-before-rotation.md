@@ -102,7 +102,7 @@ and follow imports. Two things matter:
 Build one table per audit. Rows are secrets, columns are status.
 
 | Secret | Consumers (scripts + JSONs + n8n) | Endpoints hit | Status |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `ANTHROPIC_API_KEY` | `lib.py::ask_haiku` via `server.py /api/anthropic` | `api.anthropic.com/v1/messages` | ACTIVE |
 | `BITGET_API_KEY` | `e1-economista.py`, `nexo-monitor.py`, `jarvis.py` | `/spot/market/tickers` (public), `/spot/account/assets`, `/earn/loan/*` | ACTIVE (Read-only, rotated) |
 | `GMAIL_APP_PASSWORD_IMPULSO` | `form-lead-monitor.py`, `auto-followup.py`, `clientes/X/email_config.json` | IMAP + SMTP Google | ACTIVE |

@@ -13,88 +13,31 @@ jobs:
   validate:
     name: Frontmatter, links, lint
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Install PyYAML
-        run: pip install --quiet pyyaml
+        run: python3 -m pip install --quiet pyyaml
 
-      - name: Validate SKILL.md frontmatter
-        run: |
-          python3 <<'PY'
-          import re, sys, pathlib, yaml
+      - name: Validate SKILL.md frontmatter and workflow references
+        run: python3 .github/scripts/validate_skill.py
 
-          skill = pathlib.Path("SKILL.md")
-          if not skill.exists():
-              sys.exit("FAIL: SKILL.md missing")
-
-          content = skill.read_text()
-          m = re.match(r"^---\n(.*?)\n---", content, re.DOTALL)
-          if not m:
-              sys.exit("FAIL: no YAML frontmatter at the top of SKILL.md")
-
-          try:
-              fm = yaml.safe_load(m.group(1))
-          except yaml.YAMLError as e:
-              sys.exit(f"FAIL: frontmatter is not valid YAML: {e}")
-
-          for required in ("name", "description"):
-              if not fm.get(required):
-                  sys.exit(f"FAIL: frontmatter missing required field '{required}'")
-
-          if not re.match(r"^[a-z0-9-]+$", fm["name"]):
-              sys.exit(f"FAIL: name '{fm['name']}' must be lowercase-kebab-case")
-
-          if len(fm["description"]) < 50:
-              sys.exit("FAIL: description is suspiciously short (<50 chars)")
-
-          print(f"OK: frontmatter valid (name={fm['name']}, descr_len={len(fm['description'])})")
-          PY
-
-      - name: Validate referenced workflows exist
-        run: |
-          python3 <<'PY'
-          import re, sys, pathlib
-
-          skill_text = pathlib.Path("SKILL.md").read_text()
-
-          # Match any markdown link pointing into workflows/
-          refs = re.findall(r"\(workflows/([A-Za-z0-9_-]+\.md)\)", skill_text)
-          if not refs:
-              sys.exit("FAIL: no workflow references found in SKILL.md")
-
-          missing = []
-          for r in refs:
-              p = pathlib.Path("workflows") / r
-              if not p.exists():
-                  missing.append(str(p))
-
-          if missing:
-              sys.exit("FAIL: referenced workflows missing on disk:\n  " +
-                       "\n  ".join(missing))
-
-          print(f"OK: all {len(set(refs))} referenced workflow files exist")
-          PY
-
-      - name: Markdown lint (permissive)
-        uses: DavidAnson/markdownlint-cli2-action@v16
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          globs: |
-            **/*.md
-            !.github/**
-          config: |
-            {
-              "default": true,
-              "MD013": false,
-              "MD024": { "siblings_only": true },
-              "MD033": false,
-              "MD040": false,
-              "MD041": false
-            }
+          node-version: "20"
+
+      - name: markdownlint (strict; see .github/markdownlint-config.json)
+        run: |
+          npx --yes markdownlint-cli \
+            --config .github/markdownlint-config.json \
+            --ignore node_modules \
+            "**/*.md"

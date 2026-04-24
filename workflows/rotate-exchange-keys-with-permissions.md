@@ -20,7 +20,7 @@ Before rotating, understand what an attacker could do with the **old**
 key if it leaked. Make this table for your specific old credential:
 
 | Permission | What it allows | Worst case |
-|---|---|---|
+| --- | --- | --- |
 | Read | GET market data + GET private account data (balances, open orders, history). | Attacker sees your positions; can front-run or copy. No capital moved. |
 | Spot Trade | POST orders on spot markets. | Attacker can buy-high / sell-low to drain via bad fills, or pump-and-dump a low-cap pair holding your balance. |
 | Futures / Contracts Trade | POST orders on derivatives with leverage. | Attacker opens max-leveraged losing positions → liquidation drains collateral in minutes. |
@@ -51,7 +51,7 @@ Process:
 Example mapping (BITGET):
 
 | Endpoint your code hits | Method | Permission required |
-|---|---|---|
+| --- | --- | --- |
 | `/api/v2/spot/market/tickers` | GET | none (public — can be signed or unsigned) |
 | `/api/v2/spot/account/assets` | GET | Read |
 | `/api/v2/earn/loan/ongoing-orders` | GET | Read |

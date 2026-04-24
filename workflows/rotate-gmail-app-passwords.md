@@ -57,7 +57,7 @@ The 16 characters work either way, but **every consumer has a
 preference**. Match it exactly or auth silently fails.
 
 | Library / consumer | Expected format |
-|---|---|
+| --- | --- |
 | Python `smtplib` (SMTP_SSL / STARTTLS) | Either works — it strips whitespace internally. |
 | Python `imaplib` | Usually works with spaces; some wrappers reject them. |
 | Most Node.js SMTP libs (`nodemailer`) | Without spaces. |
@@ -158,14 +158,14 @@ schedulers (SMTP). For both:
 - Reload the service so it re-reads `.secrets`:
 
   ```bash
-  launchctl unload ~/Library/LaunchAgents/com.yourorg.<service>.plist
-  launchctl load   ~/Library/LaunchAgents/com.yourorg.<service>.plist
+  launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.yourorg.<service>.plist
+  launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.yourorg.<service>.plist
   ```
 
 - Tail the log and confirm a successful cycle:
 
   ```bash
-  tail -f /tmp/<service>.log
+  tail -f ~/Library/Logs/com.yourorg.<service>.log
   ```
 
 For IMAP pollers, wait for one full poll cycle (usually 30s–2min). For
